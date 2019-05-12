@@ -19,4 +19,4 @@ The project is dockerized and has a docker-compose file that points to Dockerfil
 4. **server** package has all the handlers for routing, decoding requests and encoding responses. The handlers in the server package invoke the service functions in the article and tag packages.
 5. **postgres** package has all the database statements and queries. It has the implementations of the ArticleRepository and TagRepository interfaces defined in the content package
 6. **main** package has the main.go file which initializes all the repositories and services and handles the wiring and dependency injection of repositories into services and the services to the http server. The config.go reads all configurations for the host and port and authentication details.
-7 **db** package has the pg.sql file which contains the DDL for the article and tag tables
+7. **db** package has the pg.sql file which contains the DDL for the article and tag tables
