@@ -11,6 +11,12 @@ The project is dockerized and has a docker-compose file that points to Dockerfil
 5. Now the directory structure would be ```ffx/github.com/pamelag/blue```
 6. To run the project docker must be installed and the project needs to be built using ```docker-compose build``` 
 7. Next the command ```docker-compose up``` should be used to start the containers
+8. The last line of a successful startup would be ```Created connection pool successfully```
+9. The Post API for ```/articles``` only needs ```"title", "body" and "tags"```. The ```date``` would be a ```system date``` inserted using ```time.Now()```
+10. Please check the Docker container date at the time of container start, as the records would be inserted for that date.
+
+
+
 
 ## package structure
 1. **content** is the domain package which contains the main entities Article, Tag, the factory methods and Repository interfaces
