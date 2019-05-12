@@ -6,9 +6,9 @@ The project is dockerized and has a docker-compose file that points to Dockerfil
 
 1. Go version 1.11 and upwards is required to build this project. Please check your go version using the command ```go version```
 2. I have used go1.11 to create the project and distributed go.mod which contains all the dependencies and can run a project outside the $GOPATH.
-3. Create a directory structure of the form ffx/github.com/pamelag. I have used github code layout.
-4. Next cd to the directory pamelag and run the command git clone https://github.com/pamelag/blue.git
-5. Now the directory structure would be ffx/github.com/pamelag/blue
+3. Create a directory structure of the form ```ffx/github.com/pamelag```. I have used github code layout.
+4. Next cd to the directory pamelag and run the command ```git clone https://github.com/pamelag/blue.git```
+5. Now the directory structure would be ```ffx/github.com/pamelag/blue```
 6. To run the project docker must be installed and the project needs to be built using ```docker-compose build``` 
 7. Next the command ```docker-compose up``` should be used to start the containers
 
