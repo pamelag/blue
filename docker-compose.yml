@@ -1,0 +1,32 @@
+version: '3.2'
+services:  
+  ffx.blue.db:
+   build:
+     context: ./db
+     dockerfile: Dockerfile
+   restart: always
+   environment: 
+     - POSTGRES_DB=blue
+     - POSTGRES_USER=postgres
+     - POSTGRES_PASSWORD=postgres
+   ports:
+     - "5432:5432"
+   volumes:
+    - ./var/lib/postgresql/data
+       
+  ffx.blue.api:
+   build:
+     context: .
+     dockerfile: Dockerfile
+   environment:
+     - DB_NAME=blue
+     - DB_USER=postgres
+     - DB_PASS=postgres
+     - DB_HOST=ffx.blue.db
+     - DB_PORT=5432
+   ports:
+     - "8080:8080"
+   expose:
+     - "8080"  
+   depends_on:
+     - ffx.blue.db
