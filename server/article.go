@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/go-chi/chi"
@@ -27,8 +26,6 @@ func (h *articleHandler) router() chi.Router {
 func (h *articleHandler) addArticle(w http.ResponseWriter, r *http.Request) {
 	ctx := context.Background()
 
-	log.Println("add article called")
-
 	var request struct {
 		Title string
 		Body  string
@@ -36,7 +33,6 @@ func (h *articleHandler) addArticle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&request); err != nil {
-		log.Println("error reading article request", err)
 		encodeError(ctx, err, w)
 		return
 	}

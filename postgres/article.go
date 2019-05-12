@@ -5,15 +5,14 @@ import (
 	"log"
 	"time"
 
-	"github.com/pamelag/blue/content"
 	"github.com/jackc/pgx"
+	"github.com/pamelag/blue/content"
 )
 
 const (
 	insertArticleStmt = "insert_article"
-	insertTagStmt = "insert_tag"
+	insertTagStmt     = "insert_tag"
 )
-
 
 type articleRepository struct {
 	db *pgx.ConnPool
@@ -31,7 +30,7 @@ func NewArticleRepository(pool *pgx.ConnPool) content.ArticleRepository {
 // Store saves and article and its tags to the articleRepository
 func (ar *articleRepository) Store(article *content.Article) error {
 	db := ar.db
-	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second * 2)
+	ctx, cancelFunc := context.WithTimeout(context.Background(), time.Second*2)
 	defer cancelFunc()
 
 	tx, err := db.BeginEx(ctx, &pgx.TxOptions{IsoLevel: pgx.ReadCommitted})
@@ -47,11 +46,11 @@ func (ar *articleRepository) Store(article *content.Article) error {
 		return err
 	}
 
-	err = tx.QueryRow(articleStmt.Name, article.Title, article.Body, article.CreatedOn).Scan(&article.ID)
+	err = tx.QueryRow(articleStmt.Name, article.Title, article.Body, article.CreatedOn.Format("2006-01-02")).Scan(&article.ID)
 	if err != nil {
 		return err
 	}
-	
+
 	tagSQL := "insert into tag(article_id, created_on, tag_name, related_tags) values($1, $2, $3, $4)"
 	_, err = tx.Prepare(insertTagStmt, tagSQL)
 	if err != nil {
@@ -61,22 +60,21 @@ func (ar *articleRepository) Store(article *content.Article) error {
 	batch := tx.BeginBatch()
 
 	for _, tag := range article.Tags {
-		batch.Queue(insertTagStmt, []interface{}{article.ID, article.CreatedOn, tag.Name, tag.RelatedTags}, nil, nil)
+		batch.Queue(insertTagStmt, []interface{}{article.ID, article.CreatedOn.Format("2006-01-02"), tag.Name, tag.RelatedTags}, nil, nil)
 	}
 
 	err = batch.Send(ctx, nil)
 	if err != nil {
-   if e := tx.Rollback(); e != nil {
-      log.Println(e)
-   }
- 
-   // closing batch operation due to error on send
-   if e := batch.Close(); e != nil {
-		log.Println(e)
-   }
-   return err
+		if e := tx.Rollback(); e != nil {
+			log.Println(e)
+		}
+
+		// closing batch operation due to error on send
+		if e := batch.Close(); e != nil {
+			log.Println(e)
+		}
+		return err
 	}
- 
 
 	err = batch.Close()
 	if err != nil {
@@ -85,7 +83,6 @@ func (ar *articleRepository) Store(article *content.Article) error {
 		}
 		return err
 	}
-
 
 	return tx.Commit()
 }

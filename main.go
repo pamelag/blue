@@ -23,7 +23,7 @@ func main() {
 		ts tag.Service
 
 		articles content.ArticleRepository
-		tags content.TagRepository
+		tags     content.TagRepository
 	)
 
 	// create connection pool
@@ -40,9 +40,12 @@ func main() {
 
 	// Inject repository into services
 	as = article.NewService(articles)
-	ts = tag.NewService(tags)
+	as = article.NewLoggingService(as)
 
-	// Inject services to routing server 
+	ts = tag.NewService(tags)
+	ts = tag.NewLoggingService(ts)
+
+	// Inject services to routing server
 	srv := server.New(as, ts)
 	httpAddr := ":" + port
 
