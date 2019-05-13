@@ -11,7 +11,7 @@ The project is dockerized and has a docker-compose file that points to Dockerfil
 5. Now the directory structure would be ```ffx/github.com/pamelag/blue```
 6. To run the project docker must be installed and the project needs to be built using ```docker-compose build``` 
 7. Next use the command ```docker-compose up``` to start. The application runs on port ```8080```
-8. The last line of a successful startup would be ```Created connection pool successfully```
+8. The last line of a successful startup would be ```Created connection pool successfully```, otherwise please try stopping it with ```docker-compose down``` and starting again with ```docker-compose build``` and ```docker-compose up```
 9. The Post API for ```/articles``` only needs ```"title", "body" and "tags"```. The ```date``` would be a ```system date``` inserted using ```time.Now()```
 10. Please check the Docker container date at the time of container start, as the records would be inserted for that date.
 
